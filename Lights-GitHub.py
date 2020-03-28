@@ -135,8 +135,8 @@ def ColorConv(ColorT):
 def SunState():
 	UTCnow = datetime.datetime.utcnow()
 	PSTnow = datetime.datetime.now()
-	latitude = 47.491546
-	longitude = -122.533476
+	latitude = 47 # Sanitize
+	longitude = -122 # Sanitize
 	a = Astral()
 	SunAngle = a.solar_elevation(UTCnow, latitude, longitude)
 	# SunAngle is angle (+)above/(-)below horizon
