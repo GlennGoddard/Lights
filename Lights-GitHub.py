@@ -1,5 +1,7 @@
-# Revision Date 03/23/2020 2226
-# Sanatized for GitHub, all Birthdates are not actual (Change as needed)
+# Revision Date 03/28/2020 1420
+
+# Lines to Sanitize prior to GitHub upload:
+# ParentDay, Birthday, Location
 
 # Requires neopixel library from Adafruit
 # https://learn.adafruit.com/neopixels-on-raspberry-pi/overview	
@@ -8,6 +10,8 @@
 # Requires Astral Modual for sun position
 # https://pythonhosted.org/astral/
 # sudo pip install astral
+# Latitude and Longitude in Decimal Directions:
+# https://support.google.com/maps/answer/18539?co=GENIE.Platform%3DDesktop&hl=en
 
 # Requires paho-mqtt for MQTT intergration
 # sudo python2.7 -m pip install paho-mqtt
@@ -135,8 +139,9 @@ def ColorConv(ColorT):
 def SunState():
 	UTCnow = datetime.datetime.utcnow()
 	PSTnow = datetime.datetime.now()
-	latitude = 47 # Sanitize
-	longitude = -122 # Sanitize
+	''' Sanatize for GitHub '''	# Sanatize for GitHub
+	latitude = 47.000000		# Sanatize for GitHub 47.000000
+	longitude = -122.000000		# Sanatize for GitHub -122.000000
 	a = Astral()
 	SunAngle = a.solar_elevation(UTCnow, latitude, longitude)
 	# SunAngle is angle (+)above/(-)below horizon
@@ -170,21 +175,21 @@ def Holiday():
 	Weekday = today.weekday()
 	Holiday = 'None'
 	# Monday = 0, Tuesday = 1, Wensday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
-	if Month == 2 and Day == 23:
-		''' Sanatize for GitHub '''  # Sanatize for GitHub 2/23
-		''' 1st Birthday '''
+	if Month == 2 and Day == 20:		# Sanatize for GitHub 2, 20
+		''' Sanatize for GitHub '''		# Sanatize for GitHub
+		''' Birthday 2/20 '''			# Sanatize for GitHub #'s 2/20
 		Holiday = 'Birthday'
-	elif Month == 4 and Day == 14:
-		''' Sanatize for GitHub ''' # Sanatize for GitHub 4/14
-		''' 2nd Birthday 5/25 '''
+	elif Month == 5 and Day == 20:		# Sanatize for GitHub 5, 20
+		''' Sanatize for GitHub '''		# Sanatize for GitHub
+		''' Birthday 5/20 '''			# Sanatize for GitHub 5/20
 		Holiday = 'Birthday'
-	elif Month == 8 and Day == 19:
-		''' Sanatize for GitHub ''' # Sanatize for GitHub 8/19
-		''' 3rd Birthday  '''
+	elif Month == 7 and Day == 20:		# Sanatize for GitHub 7, 20
+		''' Sanatize for GitHub '''		# Sanatize for GitHub
+		''' Birthday 7/20 '''			# Sanatize for GitHub 7/20
 		Holiday = 'Birthday'
-	elif Month == 10 and Day == 27:
-		''' Sanatize for GitHub ''' # Sanatize for GitHub 10/27
-		''' 4th Birthday '''
+	elif Month == 11 and Day == 20:		# Sanatize for GitHub 11,20
+		''' Sanatize for GitHub '''		# Sanatize for GitHub
+		''' Birthday 11/20 '''			# Sanatize for GitHub 11/20
 		Holiday = 'Birthday'
 	elif Month == 2 and Day == 14:
 		''' Valentine's Day is 2/14 '''
@@ -499,16 +504,18 @@ def Parent():
 	if Debug is True: print 'Parent Day'
 	now = datetime.datetime.now()
 	year = now.year
-	''' Sanatize for GitHub '''  # Sanatize for GitHub 2005
-	AgeKid1 = year - 2005
-	''' Sanatize for GitHub '''  # Sanatize for GitHub 2010
-	AgeKid2 = year - 2010 - 1
-	PStep = AgeKid1 + AgeKid2
+	''' Sanatize for GitHub '''						# Sanatize for GitHub
+	AgeKid1 = year - 2005							# Sanatize for GitHub AgeKid1, 2005
+	''' Sanatize for GitHub '''						# Sanatize for GitHub 
+	AgeKid2 = year - 2010 - 1						# Sanatize for GitHub AgeKid2, 2010
+	PStep = AgeKid1 + AgeKid2						# Sanatize for GitHub AgeKid1 + AgeKid2
 	for i in range(0, LED_Last, PStep):
-		for j in range(0, AgeKid1, 1):
+		''' Sanatize for GitHub '''					# Sanatize for GitHub
+		for j in range(0, AgeKid1, 1):				# Sanatize for GitHub Kid1
 			strip.setPixelColor(i+j, CPurple)
-		for j in range(0, AgeKid2, 1):
-			strip.setPixelColor(i+AgeKid1+j, CRedLt)
+		''' Sanatize for GitHub '''  				# Sanatize for GitHub
+		for j in range(0, AgeKid2, 1):				# Sanatize for GitHub Kid2
+			strip.setPixelColor(i+AgeKid1+j, CRedLt)	# Sanatize for GitHub Kid1
 		strip.show()
 		time.sleep(1)
 	time.sleep(300)
@@ -518,21 +525,21 @@ def Familyday():
 	if Debug is True: print 'Family Day'
 	now = datetime.datetime.now()
 	year = now.year
-	''' Sanatize for GitHub ''' # Sanatize for GitHub
-	Age1 = year - 2005          # Sanatize for GitHub
-	Age2 = year - 2010          # Sanatize for GitHub
-	Age3 = year - 1975          # Sanatize for GitHub
-	Age4 = year - 1970 - 1      # Sanatize for GitHub
-	PStep = Age1 + Age2 + Age3 + Age4
+	''' Sanatize for GitHub '''											# Sanatize for GitHub
+	AgeKid1 = year - 2005												# Sanatize for GitHub AgeKid1, 2005
+	AgeKid2 = year - 2010												# Sanatize for GitHub AgeKid2, 2010
+	AgeMom = year - 1975												# Sanatize for GitHub AgeMom, 1975
+	AgeDad = year - 1970 - 1											# Sanatize for GitHub AgeDad, 1970
+	PStep = AgeKid1 + AgeKid2 + AgeMom + AgeDad							# Sanatize for GitHub AgeKid1, AgeKid2, AgeMom, AgeDad
 	for i in range(0, LED_Last, PStep):
-		for j in range(0, Age1, 1):
+		for j in range(0, AgeKid1, 1):									# Sanatize for GitHub AgeKid1
 			strip.setPixelColor(i+j, CPurple)
-		for j in range(0, Age2, 1):
-			strip.setPixelColor(i+Age1+j, CRedLt)
-		for j in range(0, Age3, 1):
-			strip.setPixelColor(i+Age1+Age2+j, CGreen)
-		for j in range(0, Age4, 1):
-			strip.setPixelColor(i+Age1+Age2+Age3+j, CYellow)			
+		for j in range(0, AgeKid2, 1):									# Sanatize for GitHub AgeKid2
+			strip.setPixelColor(i+AgeKid1+j, CRedLt)					# Sanatize for GitHub AgeKid1
+		for j in range(0, AgeMom, 1):									# Sanatize for GitHub AgeMom
+			strip.setPixelColor(i+AgeKid1+AgeKid2+j, CGreen)			# Sanatize for GitHub AgeKid1, AgeKid2
+		for j in range(0, AgeDad, 1):									# Sanatize for GitHub AgeDad
+			strip.setPixelColor(i+AgeKid1+AgeKid2+AgeMom+j, CYellow)	# Sanatize for GitHub AgeKid1, AgeKid2, AgeMom
 		strip.show()
 		time.sleep(1)
 	time.sleep(300)
