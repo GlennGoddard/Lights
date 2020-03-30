@@ -1,4 +1,4 @@
-# Revision Date 03/28/2020 1420
+# Revision Date 03/30/2020 1608
 
 # Lines to Sanitize prior to GitHub upload:
 # ParentDay, Birthday, Location
@@ -28,6 +28,11 @@ LED_FREQ_HZ		= 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA			= 5       # DMA channel to use for generating signal (try 5)
 LED_BRIGHTNESS	= 255     # Set to 0 for darkest and 255 for brightest
 LED_INVERT		= False   # True to invert the signal (when using NPN transistor level shift)
+
+# Latitude & Logitude for Sunset and Sunrise
+''' Sanatize for GitHub '''	# Sanatize for GitHub
+latitude = 47.000000		# Sanatize for GitHub 47.000000
+longitude = -122.000000		# Sanatize for GitHub -122.000000
 
 # MQTT Configuration:
 MQTT_enable		= True		# Enable MQTT
@@ -139,14 +144,16 @@ def ColorConv(ColorT):
 def SunState():
 	UTCnow = datetime.datetime.utcnow()
 	PSTnow = datetime.datetime.now()
-	''' Sanatize for GitHub '''	# Sanatize for GitHub
-	latitude = 47.000000		# Sanatize for GitHub 47.000000
-	longitude = -122.000000		# Sanatize for GitHub -122.000000
+	# Moved Lat & Long to top of script
 	a = Astral()
+	#global SunAngleMQTT
+	#global SunStateMQTT
 	SunAngle = a.solar_elevation(UTCnow, latitude, longitude)
+	#SunAngleMQTT = SunAngle
 	# SunAngle is angle (+)above/(-)below horizon
 	if SunAngle < 0.1:
 		SunState = 'Night'
+		#SunStateMQTT = SunState
 	else:
 		SunState = 'Day'
 	if ForceNight is True:
@@ -175,21 +182,17 @@ def Holiday():
 	Weekday = today.weekday()
 	Holiday = 'None'
 	# Monday = 0, Tuesday = 1, Wensday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
-	if Month == 2 and Day == 20:		# Sanatize for GitHub 2, 20
+	if Month == 2 and Day == 20:		# Sanatize for GitHub if Month == 2 and Day == 20:
 		''' Sanatize for GitHub '''		# Sanatize for GitHub
-		''' Birthday 2/20 '''			# Sanatize for GitHub #'s 2/20
 		Holiday = 'Birthday'
-	elif Month == 5 and Day == 20:		# Sanatize for GitHub 5, 20
+	elif Month == 5 and Day == 20:		# Sanatize for GitHub elif Month == 5 and Day == 20:
 		''' Sanatize for GitHub '''		# Sanatize for GitHub
-		''' Birthday 5/20 '''			# Sanatize for GitHub 5/20
 		Holiday = 'Birthday'
-	elif Month == 7 and Day == 20:		# Sanatize for GitHub 7, 20
+	elif Month == 7 and Day == 20:		# Sanatize for GitHub elif Month == 7 and Day == 20:
 		''' Sanatize for GitHub '''		# Sanatize for GitHub
-		''' Birthday 7/20 '''			# Sanatize for GitHub 7/20
 		Holiday = 'Birthday'
-	elif Month == 11 and Day == 20:		# Sanatize for GitHub 11,20
+	elif Month == 11 and Day == 20:		# Sanatize for GitHub elif Month == 11 and Day == 20:
 		''' Sanatize for GitHub '''		# Sanatize for GitHub
-		''' Birthday 11/20 '''			# Sanatize for GitHub 11/20
 		Holiday = 'Birthday'
 	elif Month == 2 and Day == 14:
 		''' Valentine's Day is 2/14 '''
@@ -505,17 +508,15 @@ def Parent():
 	now = datetime.datetime.now()
 	year = now.year
 	''' Sanatize for GitHub '''						# Sanatize for GitHub
-	AgeKid1 = year - 2005							# Sanatize for GitHub AgeKid1, 2005
+	AgeKid1 = year - 2005							# Sanatize for GitHub AgeKid1 = year - 2005
 	''' Sanatize for GitHub '''						# Sanatize for GitHub 
-	AgeKid2 = year - 2010 - 1						# Sanatize for GitHub AgeKid2, 2010
-	PStep = AgeKid1 + AgeKid2						# Sanatize for GitHub AgeKid1 + AgeKid2
+	AgeKid2 = year - 2010 - 1						# Sanatize for GitHub AgeKid2 = year - 2010 - 1
+	PStep = AgeKid1 + AgeKid2						# Sanatize for GitHub PStep = AgeKid1 + AgeKid2
 	for i in range(0, LED_Last, PStep):
-		''' Sanatize for GitHub '''					# Sanatize for GitHub
-		for j in range(0, AgeKid1, 1):				# Sanatize for GitHub Kid1
+		for j in range(0, AgeKid1, 1):
 			strip.setPixelColor(i+j, CPurple)
-		''' Sanatize for GitHub '''  				# Sanatize for GitHub
-		for j in range(0, AgeKid2, 1):				# Sanatize for GitHub Kid2
-			strip.setPixelColor(i+AgeKid1+j, CRedLt)	# Sanatize for GitHub Kid1
+		for j in range(0, AgeKid2, 1):
+			strip.setPixelColor(i+AgeKid1+j, CRedLt)
 		strip.show()
 		time.sleep(1)
 	time.sleep(300)
@@ -526,20 +527,20 @@ def Familyday():
 	now = datetime.datetime.now()
 	year = now.year
 	''' Sanatize for GitHub '''											# Sanatize for GitHub
-	AgeKid1 = year - 2005												# Sanatize for GitHub AgeKid1, 2005
-	AgeKid2 = year - 2010												# Sanatize for GitHub AgeKid2, 2010
-	AgeMom = year - 1975												# Sanatize for GitHub AgeMom, 1975
-	AgeDad = year - 1970 - 1											# Sanatize for GitHub AgeDad, 1970
-	PStep = AgeKid1 + AgeKid2 + AgeMom + AgeDad							# Sanatize for GitHub AgeKid1, AgeKid2, AgeMom, AgeDad
+	AgeKid1 = year - 2005												# Sanatize for GitHub 2005
+	AgeKid2 = year - 2010												# Sanatize for GitHub 2010
+	AgeMom = year - 1975												# Sanatize for GitHub 1975
+	AgeDad = year - 1970 - 1											# Sanatize for GitHub 1970
+	PStep = AgeKid1 + AgeKid2 + AgeMom + AgeDad
 	for i in range(0, LED_Last, PStep):
-		for j in range(0, AgeKid1, 1):									# Sanatize for GitHub AgeKid1
+		for j in range(0, AgeKid1, 1):
 			strip.setPixelColor(i+j, CPurple)
-		for j in range(0, AgeKid2, 1):									# Sanatize for GitHub AgeKid2
-			strip.setPixelColor(i+AgeKid1+j, CRedLt)					# Sanatize for GitHub AgeKid1
-		for j in range(0, AgeMom, 1):									# Sanatize for GitHub AgeMom
-			strip.setPixelColor(i+AgeKid1+AgeKid2+j, CGreen)			# Sanatize for GitHub AgeKid1, AgeKid2
-		for j in range(0, AgeDad, 1):									# Sanatize for GitHub AgeDad
-			strip.setPixelColor(i+AgeKid1+AgeKid2+AgeMom+j, CYellow)	# Sanatize for GitHub AgeKid1, AgeKid2, AgeMom
+		for j in range(0, AgeKid2, 1):
+			strip.setPixelColor(i+AgeKid1+j, CRedLt)
+		for j in range(0, AgeMom, 1):
+			strip.setPixelColor(i+AgeKid1+AgeKid2+j, CGreen)
+		for j in range(0, AgeDad, 1):
+			strip.setPixelColor(i+AgeKid1+AgeKid2+AgeMom+j, CYellow)
 		strip.show()
 		time.sleep(1)
 	time.sleep(300)
@@ -1344,14 +1345,26 @@ def MQTT(MQ_Func):
 			#now = datetime.datetime.now()
 			#MQTT_time = str(now)
 			now = datetime.datetime.now()
-			ETime = str(now.strftime("at %H:%M:%S on %m-%d-%Y"))
+			ETime = str(now.strftime(" %H:%M:%S on %m-%d-%Y"))
 			mqttc = mqtt.Client("python_pub")
 			mqttc.connect(Broker_IP, Broker_Port)
-			mqttc.publish("lights/Function", MQ_Func) # Function Name
-			mqttc.publish("lights/Holiday", mq_holiday) # Holiday Name
-			mqttc.publish("lights/Easter", ED) # Easter Date
-			mqttc.publish("lights/Time", ETime) # Time of MQTT Update
-			mqttc.publish("lights/Debug", Debug)
+			mqttc.publish("lights/Function", MQ_Func)			# Function Name
+			mqttc.publish("lights/Holiday", mq_holiday) 		# Holiday Name
+			mqttc.publish("lights/Easter", ED)					# Easter Date
+			mqttc.publish("lights/Time", ETime)					# Time of MQTT Update
+			mqttc.publish("lights/Debug/Debug", Debug)				# Debug Status
+			mqttc.publish("lights/Location/Latitude", latitude)			# Latitude
+			mqttc.publish("lights/Location/Longitude", longitude)		# Longitude
+			mqttc.publish("lights/SunState", SunStateMQTT)		# Day or Night
+#			mqttc.publish("lights/SunAngle", SunAngleMQTT)		# Angle of Sun to horizon
+			mqttc.publish("lights/Debug/ForceNight", ForceNight)		# ForceNight Status
+			mqttc.publish("lights/Debug/DebugUTC", DebugUTC)			# DebugUTC Status
+			mqttc.publish("lights/LED/COUNT", LED_COUNT)			# Number of LED pixels
+			mqttc.publish("lights/LED/PIN", LED_PIN)				# GPIO pin connected to the pixels
+			mqttc.publish("lights/LED/FREQ", LED_FREQ_HZ)			# LED signal frequency in hertz
+			mqttc.publish("lights/LED/DMA", LED_DMA)				# LED DMA
+			mqttc.publish("lights/LED/BRIGHTNESS", LED_BRIGHTNESS)	# LED Brightness
+			mqttc.publish("lights/LED/INVERT", LED_INVERT)			# LED Inverted
 			if Debug is True:
 				### Maybe makes this a one time publish per execution along with all the Debug info at the begining
 				print "MQTT updated"
@@ -1398,10 +1411,12 @@ try:
 		while True:
 			#AllTest() # Functions setup for individual testing
 			mq_holiday = "None"
+			SunStateMQTT = SunState()
 			while Holiday() != 'None':
 				''' Only checks if a Holiday '''
 				while SunState() is 'Night':
 					''' Only checks after Night '''
+					SunStateMQTT = SunState()
 					while Holiday() is 'UW' and SunState() is 'Night':
 						mq_holiday = "UW"
 						UW()
@@ -1452,9 +1467,11 @@ try:
 					blackout() # Ensures lights turn off immediatly following Holiday at Midnight
 					time.sleep(60*5) # Pause between Days
 				time.sleep(60*5) # Pause between Day and Night
+				SunStateMQTT = SunState()
 			MQTT("None")
-			time.sleep(60*5) # Prevents repeatedly checking Holiday() rotine when not a holiday
-
+			SunStateMQTT = SunState()
+			time.sleep(60*5)	# Prevents repeatedly checking Holiday() rotine when not a holiday
+			#time.sleep(60)	# Testing pause
 except KeyboardInterrupt:
 	sys.flush()
 	print (PRed),
