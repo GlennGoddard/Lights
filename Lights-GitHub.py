@@ -1,4 +1,4 @@
-# Revision Date 03/30/2020 1608
+# Revision Date 04/02/2020 1300
 
 # Lines to Sanitize prior to GitHub upload:
 # ParentDay, Birthday, Location
@@ -13,7 +13,7 @@
 # Latitude and Longitude in Decimal Directions:
 # https://support.google.com/maps/answer/18539?co=GENIE.Platform%3DDesktop&hl=en
 
-# Requires paho-mqtt for MQTT intergration
+# Requires paho-mqtt for MQTT intergration; if not using MQTT, then ignore
 # sudo python2.7 -m pip install paho-mqtt
 
 import datetime, time, sys
@@ -39,8 +39,8 @@ MQTT_enable		= True		# Enable MQTT
 Broker_IP = "10.74.1.224"	# MQTT Broker IP
 Broker_Port = "1883"		# MQTT Broker Port
 #Broker_Path = "\light\"
-MQ_Func = "None"			# Function name for MQTT
-mq_holiday = "None"			# Holiday name for MQTT
+MQ_Func = 'StartUp'			# Function name for MQTT
+MQ_Holiday = 'StartUp'		# Holiday name for MQTT
 
 ''' Set Debug to True to print to screen '''
 Debug = False
@@ -181,6 +181,7 @@ def Holiday():
 	Day = today.day
 	Weekday = today.weekday()
 	Holiday = 'None'
+	MQ_Holiday = Holiday
 	# Monday = 0, Tuesday = 1, Wensday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
 	if Month == 2 and Day == 20:		# Sanatize for GitHub if Month == 2 and Day == 20:
 		''' Sanatize for GitHub '''		# Sanatize for GitHub
@@ -244,8 +245,9 @@ def Holiday():
 		''' Christmas lights are from day after Thanksgiving until January 6 '''
 		Holiday = 'Christmas'
 	else:
-		Holiday = 'None'
+		Holiday = 'No Holiday Set Today'
 	if Debug is True: print(Holiday)
+	MQTT("Holiday Check")
 	return Holiday
 
 #	*** Not Currently in Use Holidays ***
@@ -1348,29 +1350,29 @@ def MQTT(MQ_Func):
 			ETime = str(now.strftime(" %H:%M:%S on %m-%d-%Y"))
 			mqttc = mqtt.Client("python_pub")
 			mqttc.connect(Broker_IP, Broker_Port)
-			mqttc.publish("lights/Function", MQ_Func)			# Function Name
-			mqttc.publish("lights/Holiday", mq_holiday) 		# Holiday Name
-			mqttc.publish("lights/Easter", ED)					# Easter Date
-			mqttc.publish("lights/Time", ETime)					# Time of MQTT Update
+			mqttc.publish("lights/Function", MQ_Func)				# Function Name
+			mqttc.publish("lights/Holiday", MQ_Holiday) 			# Holiday Name
+			mqttc.publish("lights/Time", ETime)						# Time of MQTT Update
 			mqttc.publish("lights/Debug/Debug", Debug)				# Debug Status
-			mqttc.publish("lights/Location/Latitude", latitude)			# Latitude
-			mqttc.publish("lights/Location/Longitude", longitude)		# Longitude
-			mqttc.publish("lights/SunState", SunStateMQTT)		# Day or Night
-#			mqttc.publish("lights/SunAngle", SunAngleMQTT)		# Angle of Sun to horizon
-			mqttc.publish("lights/Debug/ForceNight", ForceNight)		# ForceNight Status
-			mqttc.publish("lights/Debug/DebugUTC", DebugUTC)			# DebugUTC Status
-			mqttc.publish("lights/LED/COUNT", LED_COUNT)			# Number of LED pixels
-			mqttc.publish("lights/LED/PIN", LED_PIN)				# GPIO pin connected to the pixels
-			mqttc.publish("lights/LED/FREQ", LED_FREQ_HZ)			# LED signal frequency in hertz
+			mqttc.publish("lights/Location/Latitude", latitude)		# Latitude
+			mqttc.publish("lights/Location/Longitude", longitude)	# Longitude
+			# mqttc.publish("lights/SunAngle", SunAngleMQTT)		# Angle of Sun to horizon
+			mqttc.publish("lights/Debug/ForceNight", ForceNight)	# ForceNight Status
+			mqttc.publish("lights/Debug/DebugUTC", DebugUTC)		# DebugUTC Status
+			mqttc.publish("lights/LED/Count", LED_COUNT)			# Number of LED pixels
+			mqttc.publish("lights/LED/Pin", LED_PIN)				# GPIO pin connected to the pixels
+			mqttc.publish("lights/LED/Frequency", LED_FREQ_HZ)		# LED signal frequency in hertz
 			mqttc.publish("lights/LED/DMA", LED_DMA)				# LED DMA
-			mqttc.publish("lights/LED/BRIGHTNESS", LED_BRIGHTNESS)	# LED Brightness
-			mqttc.publish("lights/LED/INVERT", LED_INVERT)			# LED Inverted
+			mqttc.publish("lights/LED/Brightness", LED_BRIGHTNESS)	# LED Brightness
+			mqttc.publish("lights/LED/Invert", LED_INVERT)			# LED Inverted
+			mqttc.publish("lights/SunState", SunStateMQTT)			# Day or Night
+			mqttc.publish("lights/Easter", ED)						# Easter Date
 			if Debug is True:
 				### Maybe makes this a one time publish per execution along with all the Debug info at the begining
 				print "MQTT updated"
 				print (ETime)
 				print (MQ_Func)
-				print (mq_holiday)
+				print (MQ_Holiday)
 				print (ED)
 				print (Debug)
 		if MQTT_enable is False:
@@ -1410,54 +1412,39 @@ try:
 			sys.flush()
 		while True:
 			#AllTest() # Functions setup for individual testing
-			mq_holiday = "None"
-			SunStateMQTT = SunState()
 			while Holiday() != 'None':
 				''' Only checks if a Holiday '''
+				MQ_Holiday = Holiday()
 				while SunState() is 'Night':
 					''' Only checks after Night '''
 					SunStateMQTT = SunState()
 					while Holiday() is 'UW' and SunState() is 'Night':
-						mq_holiday = "UW"
 						UW()
 					while Holiday() is 'Birthday' and SunState() is 'Night':
-						mq_holiday = "Birthday"
 						BDay()
 					while Holiday() is 'Valentine' and SunState() is 'Night':
-						mq_holiday = "Valentine"
 						Vday()
 					while Holiday() is 'Patriotic' and SunState() is 'Night':
-						mq_holiday = "Patriotic"
 						Patriotic()
 					while Holiday() is 'Christmas' and SunState() is 'Night':
-						mq_holiday = "Christmas"
 						Christmas()
 					while Holiday() is 'StPatrick' and SunState() is 'Night':
-						mq_holiday = "StPatrick"
 						StPDay()
 					while Holiday() is 'Easter' and SunState() is 'Night':
-						mq_holiday = "Easter"
 						Easter()
 					while Holiday() is 'ParentDay' and SunState() is 'Night':
-						mq_holiday = "ParentDay"
 						Parent()
 					while Holiday() is 'Autism' and SunState() is 'Night':
-						mq_holiday = "Autism"
 						Autism()
 					while Holiday() is 'Premmie' and SunState() is 'Night':
-						mq_holiday = "Premie"
 						Premmie()
 					while Holiday() is 'HydroC' and SunState() is 'Night':
-						mq_holiday = "HydroC"
 						HydroC()
 					while Holiday() is 'CPDay' and SunState() is 'Night':
-						mq_holiday = "CPDay"
 						CPDay()
 					while Holiday() is 'DisabilityDay' and SunState() is 'Night':
-						mq_holiday = "DisabilityDay"
 						DisabilityDay()
 					while Holiday() is 'Family' and SunState() is 'Night':
-						mq_holiday = "Family"
 						Familyday()
 					# **** Disabled for Now ****
 					#while Holiday() is 'Navy' and SunState() is 'Night':
@@ -1467,11 +1454,13 @@ try:
 					blackout() # Ensures lights turn off immediatly following Holiday at Midnight
 					time.sleep(60*5) # Pause between Days
 				time.sleep(60*5) # Pause between Day and Night
+				#time.sleep(10)	# Testing pause
 				SunStateMQTT = SunState()
-			MQTT("None")
+				MQTT("SunMain")
 			SunStateMQTT = SunState()
+			MQTT("Main")
 			time.sleep(60*5)	# Prevents repeatedly checking Holiday() rotine when not a holiday
-			#time.sleep(60)	# Testing pause
+			#time.sleep(10)	# Testing pause
 except KeyboardInterrupt:
 	sys.flush()
 	print (PRed),
