@@ -12,3 +12,13 @@ Sunrise and Sunset are based on actual location, not a general location; LAT and
 
 I have a lot more comments to add to the readme file; but I am posting this finally after a few years so everyone has access to it.  I have given different versions to people over the years but this is just easier.  Enjoy.
 
+# Change Log
+
+4/2/2010  1300
+Fixed an MQTT Variable that occasionally caused a MQTT failure
+Updated MQTT to include more Topics, also established sub Topics
+
+# Things to Add / Contemplate
+
+Change MQTT to add the last time each function was run - Maybe
+Reduce MQTT publish (need to rework, might delay some info such as function calls to not be real time)
