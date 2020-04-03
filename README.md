@@ -32,8 +32,8 @@ Family Day is the 1st Sunday in August (change birthyears as needed if Birthday 
 National Hydrocephalus Awareness Day is 9/21  
 World Cerebral Palsy Awareness Day is 1st Wensday in October  
 World Hydrocephalus Awareness Day is 10/25  
-Veterans Day 11/11  
-World Prematurity Awareness Day  
+Veterans Day is 11/11  
+World Prematurity Awareness Day is 11/17  
 Christmas lights are from day after Thanksgiving until January 6  
 
 ### MQTT
