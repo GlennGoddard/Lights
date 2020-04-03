@@ -16,10 +16,10 @@ I have a lot more comments to add to the readme file; but I am posting this fina
 
 ## Change Log
 
-3/22/2020
+3/22/2020  
 Initial GitHub upload after six years of personal use.  
 
-4/2/2010  1300
+4/2/2010  1300  
 Fixed an MQTT Variable that occasionally caused a MQTT failure.  
 Updated MQTT to include more Topics, also established sub Topics.  
 
