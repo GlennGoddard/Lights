@@ -16,24 +16,24 @@ I have a lot more comments to add to the readme file; but I am posting this fina
 
 ### Holidays
 
-		Birthday - Add and adjust as needed
-		Valentine's Day is 2/14
-		Saint Patricks Day 3/17
-		Holiday = 'StPatrick'
-		Easter is between 3/22 and 4/25. 1st Sunday after the full moon that occurs on or next after the vernal equinox (March 21)
-    National Cerebral Palsy Awareness Day is 3/25
-		World Autism Awareness Day is 4/2
-		Mothers Day is 2nd Sunday in May
-		Disability Awareness Day is the 3rd Thursday of May
-		Fathers Day is 3rd Sunday in June
-	  Independance Day July 4, 1776
-		Family Day is the 1st Sunday in August
-		National Hydrocephalus Awareness Day is 9/21
-		World Cerebral Palsy Awareness Day is 1st Wensday in October
-		World Hydrocephalus Awareness Day is 10/25
-		Veterans Day 11/11
-		World Prematurity Awareness Day
-    Christmas lights are from day after Thanksgiving until January 6 '''
+Birthday - Add and adjust as needed
+Valentine's Day is 2/14
+Saint Patricks Day 3/17
+Holiday = 'StPatrick'
+Easter is between 3/22 and 4/25. 1st Sunday after the full moon that occurs on or next after the vernal equinox (March 21)
+National Cerebral Palsy Awareness Day is 3/25
+World Autism Awareness Day is 4/2
+Mothers Day is 2nd Sunday in May
+Disability Awareness Day is the 3rd Thursday of May
+Fathers Day is 3rd Sunday in June
+Independance Day July 4, 1776
+Family Day is the 1st Sunday in August
+National Hydrocephalus Awareness Day is 9/21
+World Cerebral Palsy Awareness Day is 1st Wensday in October
+World Hydrocephalus Awareness Day is 10/25
+Veterans Day 11/11
+World Prematurity Awareness Day
+Christmas lights are from day after Thanksgiving until January 6 '''
 
 
 ## Change Log
