@@ -35,22 +35,22 @@ World Prematurity Awareness Day
 Christmas lights are from day after Thanksgiving until January 6  
 
 ### MQTT
-Debug  
-DebugUTC  
-ForceNight  
-Easter  
-Function  
-Holiday  
-Brightness  
-Count  
-DMA  
-Frequency  
-Invert  
-Pin  
-Latitude  
-Longitude  
-SunState  
-Time  
+Debug       True or False  
+DebugUTC    True or False
+ForceNight  True or False  
+Easter      Date of Easter this year   
+Function    Current Function running  
+Holiday     Holiday Name today  
+Brightness  LED 0-255  
+Count       Number of total LEDs  
+DMA         DMA Setting  
+Frequency   PWM Frequency in Hz  
+Invert      Control inverted True or False  
+Pin         GPIO Pin for PWM  
+Latitude    Location for Sun Position  
+Longitude   Location for Sun Position  
+SunState    Day or Night  
+Time        Time of last MQTT post  
 
 ## Change Log
 
