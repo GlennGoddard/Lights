@@ -77,4 +77,4 @@ Enable MQTT for SunAngle (maybe a seperate function, had issues with a global va
 Add MQTT for Sunrise and Sunset times  
 Add MQTT for Thanksgiving which in turn gives the next date for Christmas light routine  
 Add MQTT for all holiday dates??? (or maybe a countdown to each)  
-
+Add routine calls variables??? (not a constant amount, is this worth the effort???)
