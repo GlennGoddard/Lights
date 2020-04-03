@@ -34,6 +34,24 @@ Veterans Day 11/11
 World Prematurity Awareness Day  
 Christmas lights are from day after Thanksgiving until January 6  
 
+### MQTT
+Debug  
+DebugUTC  
+ForceNight  
+Easter  
+Function  
+Holiday  
+Brightness  
+Count  
+DMA  
+Frequency  
+Invert  
+Pin  
+Latitude  
+Longitude  
+SunState  
+Time  
+
 ## Change Log
 
 3/22/2020  
