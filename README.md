@@ -22,11 +22,11 @@ Saint Patricks Day 3/17
 Easter is between 3/22 and 4/25. 1st Sunday after the full moon that occurs on or next after the vernal equinox (March 21)  
 National Cerebral Palsy Awareness Day is 3/25  
 World Autism Awareness Day is 4/2  
-Mothers Day is 2nd Sunday in May  
+Mothers Day is 2nd Sunday in May (change birthyears as needed if Birthday is after Mother's Day then subtract one from the year)  
 Disability Awareness Day is the 3rd Thursday of May  
-Fathers Day is 3rd Sunday in June  
+Fathers Day is 3rd Sunday in June (change birthyears as needed if Birthday is after Fathers's Day then subtract one from the year)  
 Independance Day July 4, 1776  
-Family Day is the 1st Sunday in August  
+Family Day is the 1st Sunday in August (change birthyears as needed if Birthday is after Familiy Day then subtract one from the year)  
 National Hydrocephalus Awareness Day is 9/21  
 World Cerebral Palsy Awareness Day is 1st Wensday in October  
 World Hydrocephalus Awareness Day is 10/25  
