@@ -37,7 +37,8 @@ World Prematurity Awareness Day is 11/17
 Christmas lights are from day after Thanksgiving until January 6  
 
 ### MQTT
-##### List of MQTT Topics
+List of MQTT Topics  
+  
 Debug - True or False  
 DebugUTC - True or False
 ForceNight - True or False  
