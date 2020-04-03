@@ -12,6 +12,8 @@ For those with children, the ParentDay routine which runs on Mother's Day and Fa
 
 Sunrise and Sunset are based on actual location, not a general location; LAT and Long are in decimal not mins and secs.  (Need to add instructions to obtain decimal position from Google Maps)  
 
+As of now, MQTT if using Debug will always show failed on the first attempt.  This is because on the first run of MQTT routine not all variables and other support functions have run at startup.  This is expected behavior.  The first few MQTT items will publish, this just demonstrates that the error trap works.
+
 I have a lot more comments to add to the readme file; but I am posting this finally after a few years so everyone has access to it.  I have given different versions to people over the years but this is just easier.  Enjoy.  
 
 ### Holidays
@@ -57,12 +59,22 @@ Time - Time of last MQTT post
 3/22/2020  
 Initial GitHub upload after six years of personal use.  
 
-4/2/2010  1300  
+4/2/2020  1300  
 Fixed an MQTT Variable that occasionally caused a MQTT failure.  
 Updated MQTT to include more Topics, also established sub Topics.  
+
+4/2/2020 2100
+Updated Debug tags in MQTT routine  
+Added Topic Count in MQTT  
 
 ## Things to Add / Contemplate
 
 Change MQTT to add the last time each function was run - Maybe.  
 Reduce MQTT publish (need to rework, might delay some info such as function calls to not be real time).  
-Modify ParentDay / FamilyDay routine to add space between each birthday
+Modify ParentDay / FamilyDay routine to add space between each birthday  
+Fully implement DebugDate  
+Enable MQTT for SunAngle (maybe a seperate function, had issues with a global variable inside the SunState routine)  
+Add MQTT for Sunrise and Sunset times  
+Add MQTT for Thanksgiving  
+Add MQTT for all holiday dates??? (or maybe a countdown to each)  
+
