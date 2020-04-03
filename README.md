@@ -12,7 +12,7 @@ For those with children, the ParentDay routine which runs on Mother's Day and Fa
 
 Sunrise and Sunset are based on actual location, not a general location; LAT and Long are in decimal not mins and secs.  (Need to add instructions to obtain decimal position from Google Maps)  
 
-As of now, MQTT if using Debug will always show failed on the first attempt.  This is because on the first run of MQTT routine not all variables and other support functions have run at startup.  This is expected behavior.  The first few MQTT items will publish, this just demonstrates that the error trap works.
+As of now, MQTT if using Debug will always show failed on the first attempt.  This is because on the first run of MQTT routine not all variables and other support functions have run at startup.  This is expected behavior.  The first few MQTT items will publish, this just demonstrates that the error trap works.  MQTT is not set to save any data on broker, this is why all data is sent everytime; I like it this way, so it is unlikely to change.
 
 I have a lot more comments to add to the readme file; but I am posting this finally after a few years so everyone has access to it.  I have given different versions to people over the years but this is just easier.  Enjoy.  
 
