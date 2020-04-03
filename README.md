@@ -1,6 +1,8 @@
 # Lights
 Christmas Lights ++
 
+## Description
+
 Control Script for individually addressable LEDs.
 Lights will only come on after sunset and stay on until sunrise for the respective holiday.
 Several holidays are setup.
@@ -12,7 +14,7 @@ Sunrise and Sunset are based on actual location, not a general location; LAT and
 
 I have a lot more comments to add to the readme file; but I am posting this finally after a few years so everyone has access to it.  I have given different versions to people over the years but this is just easier.  Enjoy.
 
-# Change Log
+## Change Log
 
 3/22/2020
 Initial GitHub upload after six years of personal use.
@@ -21,7 +23,7 @@ Initial GitHub upload after six years of personal use.
 Fixed an MQTT Variable that occasionally caused a MQTT failure.
 Updated MQTT to include more Topics, also established sub Topics.
 
-# Things to Add / Contemplate
+## Things to Add / Contemplate
 
 Change MQTT to add the last time each function was run - Maybe.
 Reduce MQTT publish (need to rework, might delay some info such as function calls to not be real time).
