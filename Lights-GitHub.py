@@ -1,4 +1,4 @@
-# Revision Date 04/02/2020 1300
+# Revision Date 04/02/2020 2100
 
 # Lines to Sanitize prior to GitHub upload:
 # ParentDay, Birthday, Location
@@ -1350,31 +1350,42 @@ def MQTT(MQ_Func):
 			ETime = str(now.strftime(" %H:%M:%S on %m-%d-%Y"))
 			mqttc = mqtt.Client("python_pub")
 			mqttc.connect(Broker_IP, Broker_Port)
+			mqttc.publish("lights/Debug/TopicCount", '17')				# Total number of MQTT Topics including this topic
+			if Debug is True: print 'MQTT published TopicCount'
 			mqttc.publish("lights/Function", MQ_Func)				# Function Name
+			if Debug is True: print 'MQTT published Function'
 			mqttc.publish("lights/Holiday", MQ_Holiday) 			# Holiday Name
+			if Debug is True: print 'MQTT published Holiday'
 			mqttc.publish("lights/Time", ETime)						# Time of MQTT Update
+			if Debug is True: print 'MQTT published ETime'
 			mqttc.publish("lights/Debug/Debug", Debug)				# Debug Status
+			if Debug is True: print 'MQTT published Debug'
 			mqttc.publish("lights/Location/Latitude", latitude)		# Latitude
+			if Debug is True: print 'MQTT published Latitude'
 			mqttc.publish("lights/Location/Longitude", longitude)	# Longitude
-			# mqttc.publish("lights/SunAngle", SunAngleMQTT)		# Angle of Sun to horizon
+			if Debug is True: print 'MQTT published Longitude'
 			mqttc.publish("lights/Debug/ForceNight", ForceNight)	# ForceNight Status
+			if Debug is True: print 'MQTT published ForceNight'
 			mqttc.publish("lights/Debug/DebugUTC", DebugUTC)		# DebugUTC Status
+			if Debug is True: print 'MQTT published DebugUTC'
 			mqttc.publish("lights/LED/Count", LED_COUNT)			# Number of LED pixels
+			if Debug is True: print 'MQTT published Count'
 			mqttc.publish("lights/LED/Pin", LED_PIN)				# GPIO pin connected to the pixels
+			if Debug is True: print 'MQTT published Pin'
 			mqttc.publish("lights/LED/Frequency", LED_FREQ_HZ)		# LED signal frequency in hertz
+			if Debug is True: print 'MQTT published Frequency'
 			mqttc.publish("lights/LED/DMA", LED_DMA)				# LED DMA
+			if Debug is True: print 'MQTT published DMA'
 			mqttc.publish("lights/LED/Brightness", LED_BRIGHTNESS)	# LED Brightness
+			if Debug is True: print 'MQTT published Brightness'
 			mqttc.publish("lights/LED/Invert", LED_INVERT)			# LED Inverted
+			if Debug is True: print 'MQTT published Invert'
 			mqttc.publish("lights/SunState", SunStateMQTT)			# Day or Night
+			if Debug is True: print 'MQTT published SunState'
 			mqttc.publish("lights/Easter", ED)						# Easter Date
-			if Debug is True:
-				### Maybe makes this a one time publish per execution along with all the Debug info at the begining
-				print "MQTT updated"
-				print (ETime)
-				print (MQ_Func)
-				print (MQ_Holiday)
-				print (ED)
-				print (Debug)
+			if Debug is True: print 'MQTT published Easter'
+			# mqttc.publish("lights/SunAngle", SunAngleMQTT)		# Angle of Sun to horizon (Need to fix SunAngleMQTT)
+			if Debug is True: print "MQTT updated All"
 		if MQTT_enable is False:
 			if Debug is True:
 				print "MQTT is not enabled"
