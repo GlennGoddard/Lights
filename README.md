@@ -75,6 +75,6 @@ Modify ParentDay / FamilyDay routine to add space between each birthday
 Fully implement DebugDate  
 Enable MQTT for SunAngle (maybe a seperate function, had issues with a global variable inside the SunState routine)  
 Add MQTT for Sunrise and Sunset times  
-Add MQTT for Thanksgiving  
+Add MQTT for Thanksgiving which in turn gives the next date for Christmas light routine  
 Add MQTT for all holiday dates??? (or maybe a countdown to each)  
 
