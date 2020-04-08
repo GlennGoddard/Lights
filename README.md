@@ -69,6 +69,9 @@ Updated MQTT to include more Topics, also established sub Topics.
 Updated Debug tags in MQTT routine  
 Added Topic Count in MQTT  
 
+4/8/2020 1505
+Added pause between MQTT Publish Topics due to loss of topics on some brokers
+
 ## Things to Add / Contemplate
 
 Change MQTT to add the last time each function was run - Maybe.  
