@@ -1,4 +1,4 @@
-# Revision Date 04/02/2020 2100
+# Revision Date 04/08/2020 1505
 
 # Lines to Sanitize prior to GitHub upload:
 # ParentDay, Birthday, Location
@@ -36,23 +36,29 @@ longitude = -122.000000		# Sanatize for GitHub -122.000000
 
 # MQTT Configuration:
 MQTT_enable		= True		# Enable MQTT
-Broker_IP = "10.74.1.224"	# MQTT Broker IP
-Broker_Port = "1883"		# MQTT Broker Port
-#Broker_Path = "\light\"
-MQ_Func = 'StartUp'			# Function name for MQTT
-MQ_Holiday = 'StartUp'		# Holiday name for MQTT
+Broker_IP		= "10.74.1.224"	# MQTT Broker IP
+Broker_Port 	= "1883"		# MQTT Broker Port
+MQTT_Wait		= 0.01
+#Broker_Path	= "\light\"
+MQ_Func			= 'StartUp'			# Function name for MQTT
+global MQ_Holiday
+MQ_Holiday		= 'StartUp'		# Holiday name for MQTT
+SunStateMQTT	= 'StartUp'	# Day or Night for MQTT
 
 ''' Set Debug to True to print to screen '''
-Debug = False
-DebugLoop = False
-DebugUTC = False
+Debug = False		# Print to screen Debuging
+DebugLoop = False	# Print to screen data inside some loops
+DebugUTC = False	# Print SunState function checks
+MainWait = 60*5		# Standard Wait for Main
 ''' Only comment out the Debug = True below to turn off Degub '''
 #Debug = True
+DebugMQTT = Debug
 
 if Debug is True:
 	''' Comment out below to turn off Loop Debug'''
-	#DebugLoop = True
-	#DebugUTC = True
+	#DebugLoop = True	# Use ONLY when needed, unless you want to get overwelmed
+	DebugUTC = True
+	MainWait = 10
 
 ''' Set ForceNight to True to simulate Nighttime '''
 ForceNight = False
@@ -146,14 +152,11 @@ def SunState():
 	PSTnow = datetime.datetime.now()
 	# Moved Lat & Long to top of script
 	a = Astral()
-	#global SunAngleMQTT
-	#global SunStateMQTT
 	SunAngle = a.solar_elevation(UTCnow, latitude, longitude)
 	#SunAngleMQTT = SunAngle
 	# SunAngle is angle (+)above/(-)below horizon
 	if SunAngle < 0.1:
 		SunState = 'Night'
-		#SunStateMQTT = SunState
 	else:
 		SunState = 'Day'
 	if ForceNight is True:
@@ -172,6 +175,96 @@ def SunState():
 		sys.flush()
 	return SunState
 
+# MQTT Function
+def MQTT1():
+	# Send to the MQTT Broker
+	try:
+		if MQTT_enable is True:
+			if Debug is True: print 'MQTT1 Started'
+			now = datetime.datetime.now()
+			ETime = str(now.strftime(" %H:%M:%S on %m-%d-%Y"))
+			mqttc = mqtt.Client("python_pub")
+			mqttc.connect(Broker_IP, Broker_Port)
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Time", ETime)						# Time of MQTT Update
+			if Debug is True: print 'MQTT published ETime'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Location/Latitude", latitude)		# Latitude
+			if Debug is True: print 'MQTT published Latitude'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Location/Longitude", longitude)	# Longitude
+			if Debug is True: print 'MQTT published Longitude'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Debugy/ForceNight", ForceNight)	# ForceNight Status
+			if Debug is True: print 'MQTT published ForceNight'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Debugy/DebugUTC", DebugUTC)		# DebugUTC Status
+			if Debug is True: print 'MQTT published DebugUTC'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Debugy/DebugEnable", DebugMQTT)	# Debug Status
+			if Debug is True: print 'MQTT published DebugEnable'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/LED/Count", LED_COUNT)			# Number of LED pixels
+			if Debug is True: print 'MQTT published Count'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/LED/Pin", LED_PIN)				# GPIO pin connected to the pixels
+			if Debug is True: print 'MQTT published Pin'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/LED/Frequency", LED_FREQ_HZ)		# LED signal frequency in hertz
+			if Debug is True: print 'MQTT published Frequency'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/LED/DMA", LED_DMA)				# LED DMA
+			if Debug is True: print 'MQTT published DMA'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/LED/Brightness", LED_BRIGHTNESS)	# LED Brightness
+			if Debug is True: print 'MQTT published Brightness'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/LED/Invert", LED_INVERT)			# LED Inverted
+			if Debug is True: print 'MQTT published Invert'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Easter", ED)						# Easter Date
+			if Debug is True: print 'MQTT published Easter'
+			if Debug is True: print "MQTT updated all Static"
+		if MQTT_enable is False:
+			if Debug is True:
+				print "MQTT is not enabled"
+	except:
+		# Prevent crashing if Broker is disconnected
+		if Debug is True:
+			print "MQTT Failed to publish All"
+
+# MQTT Function
+def MQTT2(MQ_Func):
+	# Send to the MQTT Broker
+	try:
+		if MQTT_enable is True:
+			if Debug is True: print 'MQTT2 Started'
+			now = datetime.datetime.now()
+			ETime = str(now.strftime(" %H:%M:%S on %m-%d-%Y"))
+			mqttc = mqtt.Client("python_pub")
+			mqttc.connect(Broker_IP, Broker_Port)
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Function", MQ_Func)				# Function Name
+			if Debug is True: print 'MQTT published Function'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Holiday", MQ_Holiday) 			# Holiday Name
+			if Debug is True: print 'MQTT published Holiday'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Time", ETime)						# Time of MQTT Update
+			if Debug is True: print 'MQTT published ETime'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/SunState", SunStateMQTT)			# Day or Night
+			if Debug is True: print 'MQTT published SunState'
+			# mqttc.publish("lights/SunAngle", SunAngleMQTT)		# Angle of Sun to horizon (Need to fix SunAngleMQTT)
+			if Debug is True: print "MQTT updated all Dynamic"
+		if MQTT_enable is False:
+			if Debug is True:
+				print "MQTT is not enabled"
+	except:
+		# Prevent crashing if Broker is disconnected
+		if Debug is True:
+			print "MQTT Failed to publish All"
+
 # Define function for specific days for lights to be on
 def Holiday():
 	''' Holidays are in order of priority.  If holidays are on the same day, the uppermost one has priority. '''
@@ -181,9 +274,10 @@ def Holiday():
 	Day = today.day
 	Weekday = today.weekday()
 	Holiday = 'None'
+	global MQ_Holiday
 	MQ_Holiday = Holiday
 	# Monday = 0, Tuesday = 1, Wensday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
-	if Month == 2 and Day == 20:		# Sanatize for GitHub if Month == 2 and Day == 20:
+	if Month == 2 and Day == 20:			# Sanatize for GitHub if Month == 2 and Day == 20:
 		''' Sanatize for GitHub '''		# Sanatize for GitHub
 		Holiday = 'Birthday'
 	elif Month == 5 and Day == 20:		# Sanatize for GitHub elif Month == 5 and Day == 20:
@@ -239,15 +333,15 @@ def Holiday():
 		''' Veterans Day 11/11 '''
 		Holiday = 'Patriotic'
 	elif Month == 11 and Day == 17:
-		''' World Prematurity Awareness Day '''
+		''' World Prematurity Awareness Day is 11/17 '''
 		Holiday = 'Premmie'
 	elif ChristmasCheck() is True:
 		''' Christmas lights are from day after Thanksgiving until January 6 '''
 		Holiday = 'Christmas'
 	else:
-		Holiday = 'No Holiday Set Today'
+		Holiday = 'None'
 	if Debug is True: print(Holiday)
-	MQTT("Holiday Check")
+	MQTT2("Holiday Check")
 	return Holiday
 
 #	*** Not Currently in Use Holidays ***
@@ -607,7 +701,7 @@ def Vday():
 # Define functions which animate LEDs in various ways.
 def blackout():
 	''' Turn off LEDs one at a time '''
-	MQTT("blackout")
+	MQTT2("blackout")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'blackout start',
@@ -625,7 +719,7 @@ def blackout():
 def colorWipe(color, wait_ms=50):
 	''' Wipe color across display a pixel at a time '''
 	if SunState() is 'Day': return
-	MQTT("colorWipe")
+	MQTT2("colorWipe")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'colorWipe',
@@ -644,7 +738,7 @@ def colorWipe(color, wait_ms=50):
 def colorWipeRev(color, wait_ms=50):
 	''' Wipe color across display a pixel at a time '''
 	if SunState() is 'Day': return
-	MQTT("colorWipeRev")
+	MQTT2("colorWipeRev")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'colorWipeRev',
@@ -666,7 +760,7 @@ def DualForce(color1, color2, Length, Wait, Repeat):
 	''' Wait is the delay time to update the next loop '''
 	''' Repeat is how many times to loop '''
 	if SunState() is 'Day': return
-	MQTT("DualForce")
+	MQTT2("DualForce")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'TriForce',
@@ -697,7 +791,7 @@ def DualForce(color1, color2, Length, Wait, Repeat):
 def DualWipe(color1, color2, wait_ms=5):
 	''' Wipe color across multiple LED strips a pixel at a time '''
 	if SunState() is 'Day': return
-	MQTT("DualWipe")
+	MQTT2("DualWipe")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'DualWipe',
@@ -725,7 +819,7 @@ def DualWipe(color1, color2, wait_ms=5):
 def DualWipe2(color1, color2, Length):
 	''' Wipe two colors for a custom length '''
 	if SunState() is 'Day': return
-	MQTT("DualWipe2")
+	MQTT2("DualWipe2")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'DualWipe2',
@@ -749,7 +843,7 @@ def DualWipe2(color1, color2, Length):
 
 def Fire(Repeat):
 	if SunState() is 'Day': return
-	MQTT("Fire")
+	MQTT2("Fire")
 	if Debug is True:
 		print 'Fire',
 		TimerStart = time.time()
@@ -777,7 +871,7 @@ def Fire(Repeat):
 	
 def Fuse(color1):
 	if SunState() is 'Day': return
-	MQTT("Fuse")
+	MQTT2("Fuse")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'Fuse',
@@ -796,7 +890,7 @@ def Fuse(color1):
 
 def FuseRev(color1):
 	if SunState() is 'Day': return
-	MQTT("FuseRev")
+	MQTT2("FuseRev")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'FuseRev',
@@ -815,7 +909,7 @@ def FuseRev(color1):
 
 def FuseMulti(color1):
 	if SunState() is 'Day': return
-	MQTT("FuseMulti")
+	MQTT2("FuseMulti")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'FuseMulti',
@@ -845,7 +939,7 @@ def FuseMulti(color1):
 
 def FuseMultiRev(color1):
 	if SunState() is 'Day': return
-	MQTT("FuseMultiRev")
+	MQTT2("FuseMultiRev")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'FuseMultiRev',
@@ -875,7 +969,7 @@ def FuseMultiRev(color1):
 
 def FuseDance(color1):
 	if SunState() is 'Day': return
-	MQTT("FuseDance")
+	MQTT2("FuseDance")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'FuseDance',
@@ -914,7 +1008,7 @@ def FuseDance(color1):
 
 def FuseDanceColor():
 	if SunState() is 'Day': return
-	MQTT("FuseDanceColor")
+	MQTT2("FuseDanceColor")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'FuseDanceColor,'
@@ -962,7 +1056,7 @@ def FuseDanceColor():
 
 def FuseDanceColorMulti():
 	if SunState() is 'Day': return
-	MQTT("FuseDanceColorMulti")
+	MQTT2("FuseDanceColorMulti")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'FuseDanceColorMulti,'
@@ -1033,7 +1127,7 @@ def FuseDanceColorMulti():
 def rainbow(wait_ms=20, iterations=1):
 	''' Draw rainbow that fades across all pixels at once '''
 	if SunState() is 'Day': return
-	MQTT("rainbow")
+	MQTT2("rainbow")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'rainbow',
@@ -1052,7 +1146,7 @@ def rainbow(wait_ms=20, iterations=1):
 def rainbowCycle(wait_ms=20, iterations=5):
 	''' Draw rainbow that uniformly distributes itself across all pixels '''
 	if SunState() is 'Day': return
-	MQTT("rainbowCycle")
+	MQTT2("rainbowCycle")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'rainbowCycle',
@@ -1071,7 +1165,7 @@ def rainbowCycle(wait_ms=20, iterations=5):
 def theaterChase(color, wait_ms=50, iterations=10):
 	''' Movie theater light style chaser animation '''
 	if SunState() is 'Day': return
-	MQTT("theaterChase")
+	MQTT2("theaterChase")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'theaterChase',
@@ -1094,7 +1188,7 @@ def theaterChase(color, wait_ms=50, iterations=10):
 def theaterChaseRainbow(wait_ms=50):
 	''' Rainbow movie theater light style chaser animation '''
 	if SunState() is 'Day': return
-	MQTT("theaterChaseRainbow")
+	MQTT2("theaterChaseRainbow")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'theaterChaseRainbow',
@@ -1116,7 +1210,7 @@ def theaterChaseRainbow(wait_ms=50):
 def TriWipe(color1, color2, color3, loops):
 	''' Wipe three colors alternating '''
 	if SunState() is 'Day': return
-	MQTT("TriWipe")
+	MQTT2("TriWipe")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'TriWipe',
@@ -1145,7 +1239,7 @@ def TriWipe(color1, color2, color3, loops):
 def TriWipe2(color1, color3, color5, loops):
 	''' Wipe three colors alternating with black seperating LEDs '''
 	if SunState() is 'Day': return
-	MQTT("TriWipe2")
+	MQTT2("TriWipe2")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'TriWipe2',
@@ -1187,7 +1281,7 @@ def TriForce(color1, color2, color3, Length, Wait, Repeat):
 	''' Wait is the delay time to update the next loop '''
 	''' Repeat is how many times to loop '''
 	if SunState() is 'Day': return
-	MQTT("TriForce")
+	MQTT2("TriForce")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'TriForce',
@@ -1223,7 +1317,7 @@ def TriSwipe(color1, color2, color3, Length, Wait, Repeat):
 	''' Wait is the delay time to update the next loop '''
 	''' Repeat is how many times to loop '''
 	if SunState() is 'Day': return
-	MQTT("TriSwipe")
+	MQTT2("TriSwipe")
 	if Debug is True:
 		TimerStart = time.time()
 		print 'TriSwipe',
@@ -1339,60 +1433,6 @@ def AllTest():
 	UW()
 	StPDay()
 	Navy()
-
-def MQTT(MQ_Func):
-	# Send to the MQTT Broker
-	try:
-		if MQTT_enable is True:
-			#now = datetime.datetime.now()
-			#MQTT_time = str(now)
-			now = datetime.datetime.now()
-			ETime = str(now.strftime(" %H:%M:%S on %m-%d-%Y"))
-			mqttc = mqtt.Client("python_pub")
-			mqttc.connect(Broker_IP, Broker_Port)
-			mqttc.publish("lights/Debug/TopicCount", '17')				# Total number of MQTT Topics including this topic
-			if Debug is True: print 'MQTT published TopicCount'
-			mqttc.publish("lights/Function", MQ_Func)				# Function Name
-			if Debug is True: print 'MQTT published Function'
-			mqttc.publish("lights/Holiday", MQ_Holiday) 			# Holiday Name
-			if Debug is True: print 'MQTT published Holiday'
-			mqttc.publish("lights/Time", ETime)						# Time of MQTT Update
-			if Debug is True: print 'MQTT published ETime'
-			mqttc.publish("lights/Debug/Debug", Debug)				# Debug Status
-			if Debug is True: print 'MQTT published Debug'
-			mqttc.publish("lights/Location/Latitude", latitude)		# Latitude
-			if Debug is True: print 'MQTT published Latitude'
-			mqttc.publish("lights/Location/Longitude", longitude)	# Longitude
-			if Debug is True: print 'MQTT published Longitude'
-			mqttc.publish("lights/Debug/ForceNight", ForceNight)	# ForceNight Status
-			if Debug is True: print 'MQTT published ForceNight'
-			mqttc.publish("lights/Debug/DebugUTC", DebugUTC)		# DebugUTC Status
-			if Debug is True: print 'MQTT published DebugUTC'
-			mqttc.publish("lights/LED/Count", LED_COUNT)			# Number of LED pixels
-			if Debug is True: print 'MQTT published Count'
-			mqttc.publish("lights/LED/Pin", LED_PIN)				# GPIO pin connected to the pixels
-			if Debug is True: print 'MQTT published Pin'
-			mqttc.publish("lights/LED/Frequency", LED_FREQ_HZ)		# LED signal frequency in hertz
-			if Debug is True: print 'MQTT published Frequency'
-			mqttc.publish("lights/LED/DMA", LED_DMA)				# LED DMA
-			if Debug is True: print 'MQTT published DMA'
-			mqttc.publish("lights/LED/Brightness", LED_BRIGHTNESS)	# LED Brightness
-			if Debug is True: print 'MQTT published Brightness'
-			mqttc.publish("lights/LED/Invert", LED_INVERT)			# LED Inverted
-			if Debug is True: print 'MQTT published Invert'
-			mqttc.publish("lights/SunState", SunStateMQTT)			# Day or Night
-			if Debug is True: print 'MQTT published SunState'
-			mqttc.publish("lights/Easter", ED)						# Easter Date
-			if Debug is True: print 'MQTT published Easter'
-			# mqttc.publish("lights/SunAngle", SunAngleMQTT)		# Angle of Sun to horizon (Need to fix SunAngleMQTT)
-			if Debug is True: print "MQTT updated All"
-		if MQTT_enable is False:
-			if Debug is True:
-				print "MQTT is not enabled"
-	except:
-		# Prevent crashing if Broker is disconnected
-		if Debug is True:
-			print "MQTT Failed"
 			
 #########
 
@@ -1405,6 +1445,9 @@ try:
 		strip.begin()
 		strip.show()
 		blackout()
+		SunStateMQTT = SunState()
+		MQTT1()
+		MQTT2("First Run")
 		# Set LastOn and LastOff in event of exit before reaching either state
 		if Debug is True: print 'Debug is ON'
 		if Debug is False: print 'Debug is OFF'
@@ -1425,7 +1468,7 @@ try:
 			#AllTest() # Functions setup for individual testing
 			while Holiday() != 'None':
 				''' Only checks if a Holiday '''
-				MQ_Holiday = Holiday()
+				# MQ_Holiday = Holiday()
 				while SunState() is 'Night':
 					''' Only checks after Night '''
 					SunStateMQTT = SunState()
@@ -1463,15 +1506,30 @@ try:
 					#while Holiday() is 'Thanksgiving' and SunState() is 'Night':
 					#	Thanksgiving()
 					blackout() # Ensures lights turn off immediatly following Holiday at Midnight
-					time.sleep(60*5) # Pause between Days
-				time.sleep(60*5) # Pause between Day and Night
-				#time.sleep(10)	# Testing pause
+					time.sleep(MainWait) # Pause between Days
+					MQTT1()
+					MQTT2("Main Night")
 				SunStateMQTT = SunState()
-				MQTT("SunMain")
+				MQTT1()
+				MQTT2("Main Holiday")
+				''' Add Testing if statement or testing sleep '''
+				if Debug is True:
+					print PCyan
+					print 'Day / Night Pause'
+					print POff
+				time.sleep(MainWait) # Pause between Day and Night
 			SunStateMQTT = SunState()
-			MQTT("Main")
-			time.sleep(60*5)	# Prevents repeatedly checking Holiday() rotine when not a holiday
-			#time.sleep(10)	# Testing pause
+			MQTT1()
+			MQTT2("Main Non-Holiday")
+			''' Add Testing if statement or testing sleep '''
+			if Debug is True:
+				print PCyan
+				print 'Non-Holiday pause'
+				print POff
+			time.sleep(MainWait)	# Prevents repeatedly checking Holiday() rotine when not a holiday
+		SunStateMQTT = SunState()
+		MQTT1()
+		MQTT2("Main True")
 except KeyboardInterrupt:
 	sys.flush()
 	print (PRed),
