@@ -69,8 +69,8 @@ Updated MQTT to include more Topics, also established sub Topics.
 Updated Debug tags in MQTT routine  
 Added Topic Count in MQTT  
 
-4/8/2020 1505
-Added pause between MQTT Publish Topics due to loss of topics on some brokers
+4/8/2020 1505  
+Added pause between MQTT Publish Topics due to loss of topics on some brokers  
 
 ## Things to Add / Contemplate
 
@@ -82,4 +82,4 @@ Enable MQTT for SunAngle (maybe a seperate function, had issues with a global va
 Add MQTT for Sunrise and Sunset times  
 Add MQTT for Thanksgiving which in turn gives the next date for Christmas light routine  
 Add MQTT for all holiday dates??? (or maybe a countdown to each)  
-Add routine calls variables??? (not a constant amount, is this worth the effort???)
+Add routine calls variables, things such as Color or # of lights??? (not a constant amount, is this worth the effort???)
