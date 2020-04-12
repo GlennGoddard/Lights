@@ -1,4 +1,4 @@
-# Revision Date 04/08/2020 1505
+# Revision Date 04/12/2020 1540
 
 # Lines to Sanitize prior to GitHub upload:
 # ParentDay, Birthday, Location
@@ -341,6 +341,7 @@ def Holiday():
 	else:
 		Holiday = 'None'
 	if Debug is True: print(Holiday)
+	MQ_Holiday = Holiday
 	MQTT2("Holiday Check")
 	return Holiday
 
@@ -1468,7 +1469,6 @@ try:
 			#AllTest() # Functions setup for individual testing
 			while Holiday() != 'None':
 				''' Only checks if a Holiday '''
-				# MQ_Holiday = Holiday()
 				while SunState() is 'Night':
 					''' Only checks after Night '''
 					SunStateMQTT = SunState()
