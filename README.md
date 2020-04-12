@@ -72,6 +72,9 @@ Added Topic Count in MQTT
 4/8/2020 1505  
 Added pause between MQTT Publish Topics due to loss of topics on some brokers  
 
+5/12/2020 1540  
+Fixed an MQTT issue with 'Holiday' during daylight hours  
+
 ## Things to Add / Contemplate
 
 Change MQTT to add the last time each function was run - Maybe.  
