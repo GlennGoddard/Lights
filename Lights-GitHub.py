@@ -1,4 +1,4 @@
-# Revision Date 04/12/2020 1540
+# Revision Date 04/15/2020 2000
 
 # Lines to Sanitize prior to GitHub upload:
 # ParentDay, Birthday, Location
@@ -222,7 +222,7 @@ def MQTT1():
 			mqttc.publish("lights/LED/Invert", LED_INVERT)			# LED Inverted
 			if Debug is True: print 'MQTT published Invert'
 			time.sleep(MQTT_Wait)
-			mqttc.publish("lights/Easter", ED)						# Easter Date
+			mqttc.publish("lights/Dates/04-Easter", ED)				# Easter Date
 			if Debug is True: print 'MQTT published Easter'
 			if Debug is True: print "MQTT updated all Static"
 		if MQTT_enable is False:
@@ -276,7 +276,7 @@ def Holiday():
 	Holiday = 'None'
 	global MQ_Holiday
 	MQ_Holiday = Holiday
-	# Monday = 0, Tuesday = 1, Wensday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
+	# Weekday: Monday = 0, Tuesday = 1, Wensday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
 	if Month == 2 and Day == 20:			# Sanatize for GitHub if Month == 2 and Day == 20:
 		''' Sanatize for GitHub '''		# Sanatize for GitHub
 		Holiday = 'Birthday'
@@ -323,7 +323,7 @@ def Holiday():
 	elif Month == 9 and Day == 21:
 		''' National Hydrocephalus Awareness Day is 9/21'''
 		Holiday = 'HydroC'
-	elif Month == 10 and Day == 6:
+	elif Month == 10 and Weekday == 2 and Day <= 7:
 		''' World Cerebral Palsy Awareness Day is 1st Wensday in October '''
 		Holiday = 'CPDay'
 	elif Month == 10 and Day == 25:
@@ -369,6 +369,83 @@ def Holiday():
 	#	Holiday = 'UW'
 
 #########
+
+# Define function MQTT Holiday list
+def MQ_HoliDates():
+	''' MQTT information '''
+	# Monday = 0, Tuesday = 1, Wensday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
+	try:
+		if MQTT_enable is True:
+			if Debug is True: print 'MQTT HoliDates Started'
+			mqttc = mqtt.Client("python_pub")
+			mqttc.connect(Broker_IP, Broker_Port)
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/01-Birthday_1", '2/20')		# Sanatize for GitHub 2/20
+			if Debug is True: print 'MQTT published Birthday 1'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/01-Birthday_2", '5/20')	# Sanatize for GitHub 5/20
+			if Debug is True: print 'MQTT published Birthday 2'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/01-Birthday_3", '7/20')	# Sanatize for GitHub 7/20
+			if Debug is True: print 'MQTT published Birthday 3'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/01-Birthday_4", '11/20')	# Sanatize for GitHub 11/20
+			if Debug is True: print 'MQTT published Birthday 4'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/02-Valentine", '2/14')
+			if Debug is True: print 'MQTT published Valentine'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/03-Saint_Patrick", '3/17')
+			if Debug is True: print 'MQTT published Saint Patrick'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/05-National_Cerebral_Palsy", '3/25')
+			if Debug is True: print 'MQTT published National Cerebral Palsy'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/06-World_Autism_Awareness", '4/2')
+			if Debug is True: print 'MQTT published World Autism Awareness'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/07-Mother", '2nd Sunday in May, 5/8 - 5/15')
+			if Debug is True: print 'MQTT published Mother'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/08-Disability_Awareness", '3rd Thursday of May, 5/15 - 5/21')
+			if Debug is True: print 'MQTT published Disability Awareness'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/09-Father", '3rd Sunday in June, 6/15 - 6/21')
+			if Debug is True: print 'MQTT published Father'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/10-Independance", '7/4')
+			if Debug is True: print 'MQTT published Independance Day'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/11-Family", '1st Sunday in August, 8/1 - 8/7')
+			if Debug is True: print 'MQTT published Family'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/12-National_Hydrocephalus_Awareness", '9/21')
+			if Debug is True: print 'MQTT published National Hydrocephalus Awareness'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/13-World_Cerebral_Palsy_Awareness", '1st Wensday in October, 10/1 - 10/7')
+			if Debug is True: print 'MQTT published World Cerebral Palsy Awareness Day'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/14-World_Hydrocephalus_Awareness", '10/25')
+			if Debug is True: print 'MQTT published World Hydrocephalus Awareness Day'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/15-Veterans", '11/11')
+			if Debug is True: print 'MQTT published Veterans Day'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/16-World_Prematurity_Awareness", '11/17')
+			if Debug is True: print 'MQTT published World Prematurity Awareness Day'
+			time.sleep(MQTT_Wait)
+			mqttc.publish("lights/Dates/17-Christmas", 'Day after Thanksgiving until All King Day')
+			if Debug is True: print 'MQTT published Christmas'
+			if Debug is True: print "MQTT updated all Holiday Dates"
+		if MQTT_enable is False:
+			if Debug is True:
+				print "MQTT is not enabled"
+	except:
+		# Prevent crashing if Broker is disconnected
+		if Debug is True:
+			print "MQTT Failed to publish All"
+
+#####
 
 # Holiday Date and birthstone Checks
 def Bstone(): # Assign birthstone to months
@@ -1512,6 +1589,7 @@ try:
 				SunStateMQTT = SunState()
 				MQTT1()
 				MQTT2("Main Holiday")
+				MQ_HoliDates()
 				''' Add Testing if statement or testing sleep '''
 				if Debug is True:
 					print PCyan
@@ -1521,6 +1599,7 @@ try:
 			SunStateMQTT = SunState()
 			MQTT1()
 			MQTT2("Main Non-Holiday")
+			MQ_HoliDates()
 			''' Add Testing if statement or testing sleep '''
 			if Debug is True:
 				print PCyan
