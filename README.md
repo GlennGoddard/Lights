@@ -72,8 +72,12 @@ Added Topic Count in MQTT
 4/8/2020 1505  
 Added pause between MQTT Publish Topics due to loss of topics on some brokers  
 
-5/12/2020 1540  
+4/12/2020 1540  
 Fixed an MQTT issue with 'Holiday' during daylight hours  
+
+4/15/2020 2000
+Added Holiday Dates under MQTT Topic
+Fixed one of the Awareness Date Calculations
 
 ## Things to Add / Contemplate
 
